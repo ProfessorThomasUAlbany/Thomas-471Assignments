@@ -18,6 +18,8 @@ public class FirstPersonController : MonoBehaviour
     GameObject bulletSpawner;
     [SerializeField]
     GameObject bullet;
+    [SerializeField]
+    ParticleSystem particles;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -74,8 +76,17 @@ public class FirstPersonController : MonoBehaviour
         hasJumped = true;
     }
 
-    void OnAttack() 
+    void OnAttack(InputAction.CallbackContext attackValue) 
     {
         Instantiate(bullet, bulletSpawner.transform.position, bulletSpawner.transform.rotation);
+        if (attackValue.started) 
+        {
+            particles.emission.enabled = true;
+        }
+        else if (attackValue.canceled) 
+        {
+            particles.emission.enabled = false;
+        }
+
     }
 }
