@@ -81,11 +81,11 @@ public class FirstPersonController : MonoBehaviour
         Instantiate(bullet, bulletSpawner.transform.position, bulletSpawner.transform.rotation);
         if (attackValue.started) 
         {
-            particles.emission.enabled = true;
+            //particles.emission.enabled = true;
         }
         else if (attackValue.canceled) 
         {
-            particles.emission.enabled = false;
+            //particles.emission.enabled = false;
         }
 
     }
