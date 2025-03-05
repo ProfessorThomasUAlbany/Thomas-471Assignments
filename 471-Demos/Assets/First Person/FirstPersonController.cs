@@ -5,7 +5,6 @@ public class FirstPersonController : MonoBehaviour
 {
     Vector2 movement;
     Vector2 mouseMovement;
-    bool hasJumped = false;
     float cameraUpRotation = 0;
     CharacterController controller;
     [SerializeField]
@@ -20,6 +19,15 @@ public class FirstPersonController : MonoBehaviour
     GameObject bullet;
     [SerializeField]
     ParticleSystem particles;
+
+    //New Jump Variables
+    bool hasJumped = false;
+    float ySpeed = 0;
+    [SerializeField]
+    float jumpHeight = 1.0f;
+    [SerializeField]
+    float gravityVal = 9.8f;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,17 +56,31 @@ public class FirstPersonController : MonoBehaviour
 
         Vector3 actual_movement = (transform.forward * moveZ) + (transform.right * moveX);
 
+        // Jumping Code! //
+
         if (hasJumped) 
         {
             hasJumped = false;
-            actual_movement.y = 10;
+            ySpeed = jumpHeight;
         }
 
-        actual_movement.y -= 10 * Time.deltaTime;
+        ySpeed -= gravityVal * Time.deltaTime;
+        actual_movement.y = ySpeed;
+
+        // End Jumping Code //
 
 
         controller.Move(actual_movement * Time.deltaTime * speed);
 
+    }
+
+    void OnJump() 
+    {
+        if (controller.isGrounded) 
+        {
+            hasJumped = true;
+        }
+        
     }
 
     void OnMove(InputValue moveVal) 
@@ -71,12 +93,16 @@ public class FirstPersonController : MonoBehaviour
         //print(mouseMovement);
     }
 
+<<<<<<< Updated upstream
     void OnJump() 
     {
         hasJumped = true;
     }
 
     void OnAttack(InputAction.CallbackContext attackValue) 
+=======
+    void OnAttack() 
+>>>>>>> Stashed changes
     {
         Instantiate(bullet, bulletSpawner.transform.position, bulletSpawner.transform.rotation);
         if (attackValue.started) 
